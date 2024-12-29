@@ -8,16 +8,37 @@ import (
 )
 
 func TestGetAPIKey(t *testing.T) {
-	response, err := http.Get("https://run.mocky.io/v3/c2c276e0-d81b-41e6-8761-c412f579bc95")
-	if err != nil {
-		t.Fatal("Response Not Found")
+	tests := []struct {
+		name           string
+		input          string
+		expectedAPIKey string
+	}{
+		{
+			name:           "test 1",
+			input:          "https://run.mocky.io/v3/aa66f7db-65df-4160-939a-617e46097934",
+			expectedAPIKey: "123-456-kappa",
+		},
+		{
+			name:           "test 2",
+			input:          "",
+			expectedAPIKey: "",
+		},
 	}
-	got, err := GetAPIKey(response.Header)
-	if err != nil {
-		fmt.Println(err)
-		t.Fatal("Missing API key")
-	}
-	if !reflect.DeepEqual("123-456-kappa", "error") {
-		t.Fatalf("%s: expected: %v, got: %v", "MockyTest", "123-456-kappa", got)
+	for _, v := range tests {
+		if v.input == "" {
+			fmt.Printf("for %s, you enter %v", v.name, v.input)
+			continue
+		}
+		response, err := http.Get(v.input)
+		if err != nil {
+			t.Fatal("Response Not Found")
+		}
+		got, err := GetAPIKey(response.Header)
+		if err != nil {
+			t.Fatal("APIKey Not Found")
+		}
+		if !reflect.DeepEqual(v.expectedAPIKey, got) {
+			t.Fatalf("%s: expected: %v, got: %v", v.name, v.expectedAPIKey, got)
+		}
 	}
 }
