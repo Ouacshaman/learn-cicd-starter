@@ -15,7 +15,7 @@ func TestGetAPIKey(t *testing.T) {
 	}{
 		{
 			name:           "test 1",
-			input:          "https://run.mocky.io/v3/aa66f7db-65df-4160-939a-617e46097934",
+			input:          "https://run.mocky.io/v3/95b20dc8-6073-4598-858c-8309faf28ef8",
 			expectedAPIKey: "123-456-kappa",
 		},
 		{
